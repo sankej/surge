@@ -1,0 +1,16 @@
+# Reject
+# > 屏蔽 AnyGo
+DOMAIN-SUFFIX,download.itoolab.com
+DOMAIN-SUFFIX,order.luckydogsoft.com
+
+# > 屏蔽 BetterTouchTool
+DOMAIN-SUFFIX,folivora.ai
+DOMAIN-SUFFIX,www.folivora.ai
+DOMAIN-SUFFIX,updates.boastr.net
+DOMAIN-SUFFIX,updates.folivora.ai
+DOMAIN-SUFFIX,updates.bettertouchtool.net
+DOMAIN-SUFFIX,bettertouchtool.net
+
+# > 屏蔽 BeyondCompare
+DOMAIN-SUFFIX,www.scootersoftware.com
+DOMAIN-SUFFIX,scootersoftware.com
