@@ -1,4 +1,4 @@
-# Reject
+# 软件屏蔽
 # > 屏蔽 AnyGo
 DOMAIN-SUFFIX,download.itoolab.com
 DOMAIN-SUFFIX,order.luckydogsoft.com
@@ -14,3 +14,15 @@ DOMAIN-SUFFIX,bettertouchtool.net
 # > 屏蔽 BeyondCompare
 DOMAIN-SUFFIX,www.scootersoftware.com
 DOMAIN-SUFFIX,scootersoftware.com
+
+# > 屏蔽 DaisyDisk
+DOMAIN-SUFFIX,daisydiskapp.com
+
+# 隐私屏蔽
+# > 掘金插件(字节跳动,西瓜视频)
+DOMAIN-SUFFIX,mcs.snssdk.com
+
+# 广告屏蔽
+# > 穿山甲广告
+DOMAIN-SUFFIX,pglstatp-toutiao.com
+DOMAIN-SUFFIX,pangolin-sdk-toutiao.com

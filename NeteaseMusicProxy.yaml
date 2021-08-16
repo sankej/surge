@@ -1,6 +1,0 @@
-proxies:
-  # unlock NeteaseMusic
-  - name: 'NeteaseMusic'
-    type: http
-    server: 119.29.81.95
-    port: 8080
