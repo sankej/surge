@@ -1,0 +1,5 @@
+#!name=Fix Advertising MITM
+#!desc=修复Advertising MITM
+
+[MITM]
+hostname = %INSERT% -pan.baidu.com,-passport.baidu.com

@@ -104,3 +104,4 @@ hostname = %APPEND% www.google.cn,www.firefox.com.cn,api.abema.io,app.biliintl.c
 [Rule]
 # > 屏蔽HTTP3/QUIC UDP流量, 强制回退HTTP2/HTTP1.1
 AND,((PROTOCOL,UDP),(DEST-PORT,443)),REJECT-NO-DROP
+IP-CIDR,192.168.31.0/24,🏠 Home,no-resolve

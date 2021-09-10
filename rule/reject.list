@@ -11,6 +11,9 @@ DOMAIN-SUFFIX,updates.folivora.ai
 DOMAIN-SUFFIX,updates.bettertouchtool.net
 DOMAIN-SUFFIX,bettertouchtool.net
 
+# > 屏蔽 BetterOneTab
+DOMAIN-SUFFIX,boss.cnwangjie.com
+
 # > 屏蔽 BeyondCompare
 DOMAIN-SUFFIX,www.scootersoftware.com
 DOMAIN-SUFFIX,scootersoftware.com
@@ -21,6 +24,8 @@ DOMAIN-SUFFIX,daisydiskapp.com
 # 隐私屏蔽
 # > 掘金插件(字节跳动,西瓜视频)
 DOMAIN-SUFFIX,mcs.snssdk.com
+# > vscode
+DOMAIN-SUFFIX,dc.services.visualstudio.com
 
 # 广告屏蔽
 # > 穿山甲广告
