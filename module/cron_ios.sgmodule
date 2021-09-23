@@ -3,4 +3,4 @@
 
 [Script]
 # boxjs
-Boxjs_Gist_恢复备份 = type=cron,cronexp=40 0 * * *,script-path=https://raw.githubusercontent.com/dompling/Script/master/gist/restore.js,script-update-interval=0
+Boxjs_Gist_恢复备份 = type=cron,cronexp=40 0 * * *,script-path=https://raw.githubusercontent.com/sankej/surge/main/script/gist_restore.js,script-update-interval=0
