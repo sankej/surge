@@ -71,14 +71,6 @@ function getBackGist(backup) {
     then(response => JSON.parse(response.body));
 }
 
-function saveBoxJSData(data) {
-  if (Array.isArray(data)) {
-    data.forEach((dat) => $.write(dat.val, `#${dat.key}`));
-  } else {
-    $.write(data.val, `#${data.key}`);
-  }
-}
-
 function ENV() {
   const isQX = typeof $task !== 'undefined';
   const isLoon = typeof $loon !== 'undefined';
