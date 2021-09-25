@@ -4,171 +4,65 @@
  */
 
 const $ = new API('ql', true)
+const $ql = new QL_API();
 
-const own_cookiekeys = [
-  'airtcp_cookie',
-  'eleme_app_cookie',
-  'eleme_app_longitude',
-  'eleme_app_latitude',
-  'smzdm_cookie',
-]
 const title = '🐉 通知提示'
-const ipAddress = $.read('ip') || ''
-const baseURL = `http://${ipAddress}`
-const urlStr = 'envs'
-
-let token = ''
-const headers = {
-  'Content-Type': `application/json;charset=UTF-8`,
-}
-const account = {
-  password: $.read('password'),
-  username: $.read('username'),
-}
-
-const jd_cookies = JSON.parse($.read('#CookiesJD') || '[]')
-
-const owns_cookies = own_cookiekeys.map((key) => ({
-  name: key,
-  value: $.read(key) || '',
-}))
-
-let remark = {}
-try {
-  const _remark = JSON.parse(JSON.parse($.read('#jd_ck_remark') || '{}').remark || '[]')
-
-  _remark.forEach((item) => {
-    remark[item.username] = item
-  })
-} catch (e) {
-  console.log(e)
-}
-
-function getUsername(ck) {
-  if (!ck) return ''
-  return decodeURIComponent(ck.match(/pt_pin=(.+?);/)[1])
-}
-
-$.log(`登陆：${ipAddress}`)
-$.log(`账号：${account.username}`)
-;(async () => {
-  const loginRes = await login()
-  if (loginRes.code === 400) return $.notify(title, '', loginRes.msg)
-  token = loginRes.data.token
-  headers.Authorization = `Bearer ${token}`
-  const cookiesRes = await getCookies()
-  const ids = cookiesRes.data.map((item) => item._id)
-  await delCookie(ids)
-  const wskeyRes = await getCookies('JD_WSCK')
-  await delCookie(wskeyRes.data.map((item) => item._id))
-  $.log('清空 cookie 和 wskey')
-
-  const addData = []
-  const wsCookie = []
-  for (const jd_cookie of jd_cookies) {
-    const username = getUsername(jd_cookie.cookie)
-    let remarks = ''
-    if (remark[username]) {
-      remarks = remark[username].nickname
-
-      remarks += `&${remark[username].remark}`
-      if (remark[username].qywxUserId) remarks += `&${remark[username].qywxUserId}`
-    } else {
-      remarks = username
+const notify_log = ''
+const envKeys = JSON.parese($.read('#env_keys') || '[]')
+const envData = envKeys
+  .map((key) => {
+    const value = $.read(`#${key}`)
+    const isArr = /^\[.+\]$/.test(value)
+    if (isArr) {
+      return JSON.parse(value).map(({ userName, cookie }) => ({ name: 'JD_COOKIE', value: cookie, remarks: userName }))
     }
-    addData.push({ name: 'JD_COOKIE', value: jd_cookie.cookie, remarks })
-    if (jd_cookie.wskey) {
-      wsCookie.push({
-        name: 'JD_WSCK',
-        remarks: remarks.split('&')[0],
-        value: `${jd_cookie.wskey}pt_pin=${encodeURI(username)};`,
-      })
-    }
-  }
-
-  if (addData.length) await addCookies(addData)
-  if (wsCookie.length) await addCookies(wsCookie)
-  if (owns_cookies.length) await addCookies(owns_cookies)
-
-  const _cookiesRes = await getCookies()
-  const _ids = []
-  for (let index = 0; index < _cookiesRes.data.length; index++) {
-    const item = _cookiesRes.data[index]
-    const response = await TotalBean(item.value)
-    if (response.retcode !== '0') _ids.push(item)
-  }
-
-  if (_ids.length > 0) {
-    const ids = _ids.map((item) => item._id)
-    console.log(`过期账号：${_ids.map((item) => item.remarks || getUsername(item.value)).join(`\n`)}`)
-    await disabled(ids)
-  }
-
-  const cookieText = jd_cookies.map((item) => item.userName).join(`\n`)
-  if ($.read('mute') !== 'true') {
-    return $.notify(title, '', `已同步账号： ${cookieText}`)
-  }
-})()
-  .catch((e) => {
-    $.log(JSON.stringify(e))
-  })
-  .finally(() => {
-    $.done()
-  })
-
-async function TotalBean(Cookie) {
-  const opt = {
-    url: 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2&sceneval=2&g_login_type=1&g_ty=ls',
-    headers: {
-      cookie: Cookie,
-      Referer: 'https://home.m.jd.com/',
-    },
-  }
-  return $.http.get(opt).then((response) => {
-    try {
-      return JSON.parse(response.body)
-    } catch (e) {
-      return {}
+    return {
+      name: key,
+      value: value || '',
+      remarks: ''
     }
   })
-}
+  .flat()
 
-function getURL(api, key = 'api') {
-  return `${baseURL}/${key}/${api}`
-}
+  ; (async () => {
+    await $ql.login()
+    $.info(`青龙cookie登入同步`)
 
-function login() {
-  const opt = {
-    headers,
-    url: getURL('login'),
-    body: JSON.stringify(account),
-  }
-  return $.http.post(opt).then((response) => JSON.parse(response.body))
-}
+    envData.forEach(env => {
+      const { data: qlEnvs } = await $ql.getEnvs(env.name)
+      let response
 
-function getCookies(searchValue = 'JD_COOKIE') {
-  const opt = { url: getURL(urlStr) + `?searchValue=${searchValue}`, headers }
-  return $.http.get(opt).then((response) => JSON.parse(response.body))
-}
+      if (qlEnvs && qlEnvs.length) {
+        const qlEnv = qlEnvs.length === 1
+          ? qlEnvs[0]
+          : qlEnvs.find(item => item.remarks === env.remarks)
 
-function addCookies(cookies) {
-  const opt = { url: getURL(urlStr), headers, body: JSON.stringify(cookies) }
-  return $.http.post(opt).then((response) => JSON.parse(response.body))
-}
+        if (qlEnv.value === env.value) {
+          return notify_log += $.info(`${env.name}-${env.remarks}: 无需更新`)
+        }
 
-function delCookie(ids) {
-  const opt = { url: getURL(urlStr), headers, body: JSON.stringify(ids) }
-  return $.http.delete(opt).then((response) => JSON.parse(response.body))
-}
+        response = await $ql.editEnvs({ ...env, _id: qlEnv._id })
+      } else {
+        response = await $ql.addEnvs([env])
+      }
 
-function disabled(ids) {
-  const opt = {
-    url: getURL(`${urlStr}/disable`),
-    headers,
-    body: JSON.stringify(ids),
-  }
-  return $.http.put(opt).then((response) => JSON.parse(response.body))
-}
+      if (response.code === 200) {
+        notify_log += $.info(`${env.name}-${env.remarks}: 同步青龙成功`)
+      } else {
+        notify_log += $.info(`${env.name}-${env.remarks}: 同步青龙失败`)
+      }
+    })
+
+    if ($.read('mute') !== 'true') {
+      return $.notify(title, '', notify_log)
+    }
+  })()
+    .catch((e) => {
+      $.log(JSON.stringify(e))
+    })
+    .finally(() => {
+      $.done()
+    })
 
 function ENV() {
   const isQX = typeof $task !== 'undefined'
@@ -197,9 +91,9 @@ function HTTP(defaultOptions = { baseURL: '' }) {
     const timeout = options.timeout
     const events = {
       ...{
-        onRequest: () => {},
+        onRequest: () => { },
         onResponse: (resp) => resp,
-        onTimeout: () => {},
+        onTimeout: () => { },
       },
       ...options.events,
     }
@@ -244,19 +138,19 @@ function HTTP(defaultOptions = { baseURL: '' }) {
     let timeoutid
     const timer = timeout
       ? new Promise((_, reject) => {
-          timeoutid = setTimeout(() => {
-            events.onTimeout()
-            return reject(`${method} URL: ${options.url} exceeds the timeout ${timeout} ms`)
-          }, timeout)
-        })
+        timeoutid = setTimeout(() => {
+          events.onTimeout()
+          return reject(`${method} URL: ${options.url} exceeds the timeout ${timeout} ms`)
+        }, timeout)
+      })
       : null
 
     return (
       timer
         ? Promise.race([timer, worker]).then((res) => {
-            clearTimeout(timeoutid)
-            return res
-          })
+          clearTimeout(timeoutid)
+          return res
+        })
         : worker
     ).then((resp) => events.onResponse(resp))
   }
@@ -372,10 +266,6 @@ function API(name = 'untitled', debug = false) {
         if (isNode) {
           return this.root[key]
         }
-      } else if (own_cookiekeys.includes(key)) {
-        if (isSurge || isLoon) {
-          return $persistentStore.read(key)
-        }
       } else {
         return this.cache[key]
       }
@@ -443,6 +333,7 @@ function API(name = 'untitled', debug = false) {
 
     info(msg) {
       console.log(msg)
+      return msg
     }
 
     error(msg) {
@@ -465,4 +356,215 @@ function API(name = 'untitled', debug = false) {
       }
     }
   })(name, debug)
+}
+
+function QL_API() {
+  return new (class QL {
+    constructor() {
+      this.$ = new API('ql', true);
+      const ipAddress = this.$.read('ip') || '';
+      this.baseURL = `http://${ipAddress}`;
+      this.account = {
+        password: this.$.read('password'),
+        username: this.$.read('username'),
+      };
+      if (!this.account.password || !this.account.username)
+        return (this.ql = false);
+    }
+
+    ql = true;
+    headers = {
+      'Content-Type': `application/json;charset=UTF-8`,
+      Authorization: '',
+    };
+
+    getURL(key = '') {
+      return `${this.baseURL}/api/envs${key}`;
+    }
+
+    login() {
+      const opt = {
+        headers: this.headers,
+        body: JSON.stringify(this.account),
+        url: `${this.baseURL}/api/login`,
+      };
+      return this.$.http.post(opt).then((response) => {
+        const loginRes = JSON.parse(response.body);
+        if (loginRes.code !== 200) {
+          return this.$.notify(title, '', loginRes.msg);
+        }
+        this.headers.Authorization = `Bearer ${loginRes.data.token}`;
+      });
+    }
+
+    getEnvs(keyword = '') {
+      const opt = {
+        url: this.getURL() + `?searchValue=${keyword}`,
+        headers: this.headers,
+      };
+      return this.$.http.get(opt).then((response) => JSON.parse(response.body));
+    }
+
+    addEnvs(cookies) {
+      const opt = {
+        url: this.getURL(),
+        headers: this.headers,
+        body: JSON.stringify(cookies),
+      };
+      return this.$.http
+        .post(opt)
+        .then((response) => JSON.parse(response.body));
+    }
+
+    editEnvs(ids) {
+      const opt = {
+        url: this.getURL(),
+        headers: this.headers,
+        body: JSON.stringify(ids),
+      };
+      return this.$.http.put(opt).then((response) => JSON.parse(response.body));
+    }
+
+    delEnvs(ids) {
+      const opt = {
+        url: this.getURL(),
+        headers: this.headers,
+        body: JSON.stringify(ids),
+      };
+      return this.$.http
+        .delete(opt)
+        .then((response) => JSON.parse(response.body));
+    }
+
+    disabled(ids) {
+      const opt = {
+        url: this.getURL(`/disable`),
+        headers: this.headers,
+        body: JSON.stringify(ids),
+      };
+      return this.$.http.put(opt).then((response) => JSON.parse(response.body));
+    }
+
+    enabledEnvs(ids) {
+      const opt = {
+        url: this.getURL(`/enable`),
+        headers: this.headers,
+        body: JSON.stringify(ids),
+      };
+      return this.$.http.put(opt).then((response) => JSON.parse(response.body));
+    }
+
+    getUsername(ck) {
+      if (!ck) return '';
+      console.log(ck);
+      return decodeURIComponent(ck.match(/pt_pin=(.+?);/)[1]);
+    }
+
+    async asyncWSCoookie(cookieValue) {
+      try {
+        await this.login();
+        console.log(`青龙wskey登陆同步`);
+        if (this.headers.Authorization) {
+          let qlCk = await this.getEnvs('JD_WSCK');
+          if (!qlCk.data) return;
+          qlCk = qlCk.data;
+          const DecodeName = this.getUsername(cookieValue);
+          const current = qlCk.find(
+            (item) => getUsername(item.value) === DecodeName,
+          );
+          if (current && current.value === cookieValue) {
+            console.log('该账号无需更新');
+            return;
+          }
+          let nickName = '';
+          const remarks = remark.find((item) => item.username === DecodeName);
+          if (remarks && remarks.nickname) nickName = remarks.nickname;
+          let response;
+          if (current) {
+            current.value = cookieValue;
+            response = await this.editEnvs({
+              name: 'JD_WSCK',
+              remarks: current.remarks || nickName,
+              value: cookieValue,
+              _id: current._id,
+            });
+            response = await this.enabledEnvs([current._id]);
+          } else {
+            response = await this.addEnvs([
+              { name: 'JD_WSCK', value: cookieValue, remarks: nickName },
+            ]);
+          }
+          console.log(JSON.stringify(response));
+          if ($.mute === 'true' && response.code === 200) {
+            return console.log(
+              '用户名: ' + DecodeName + '同步wskey更新青龙成功🎉',
+            );
+          } else if (response.code === 200) {
+            this.$.notify(
+              '用户名: ' + DecodeName,
+              '',
+              '同步wskey更新青龙成功🎉',
+            );
+          } else {
+            console.log('青龙同步失败');
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    async asyncCoookie(cookieValue) {
+      try {
+        await this.login();
+        console.log(`青龙cookie登陆同步`);
+        if (this.headers.Authorization) {
+          let qlCk = await this.getEnvs('JD_COOKIE');
+          if (!qlCk.data) return;
+          qlCk = qlCk.data;
+          const DecodeName = this.getUsername(cookieValue);
+          const current = qlCk.find(
+            (item) => getUsername(item.value) === DecodeName,
+          );
+          if (current && current.value === cookieValue) {
+            console.log('该账号无需更新');
+            return;
+          }
+
+          let response;
+          if (current) {
+            current.value = cookieValue;
+            response = await this.editEnvs({
+              name: 'JD_COOKIE',
+              remarks: current.remarks,
+              value: cookieValue,
+              _id: current._id,
+            });
+            response = await this.enabledEnvs([current._id]);
+          } else {
+            response = await this.addEnvs([
+              { name: 'JD_COOKIE', value: cookieValue },
+            ]);
+          }
+
+          console.log(JSON.stringify(response));
+          if ($.mute === 'true' && response.code === 200) {
+            return console.log(
+              '用户名: ' + DecodeName + '同步Cookie更新青龙成功🎉',
+            );
+          } else if (response.code === 200) {
+            this.$.notify(
+              '用户名: ' + DecodeName,
+              '',
+              '同步Cookie更新青龙成功🎉',
+            );
+          } else {
+            console.log('青龙同步失败');
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  })();
 }

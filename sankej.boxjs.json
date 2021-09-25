@@ -1,0 +1,287 @@
+{
+	"id": "sankej.app.sub",
+	"name": "SankeJ 应用订阅",
+	"author": "@SankeJ",
+	"icon": "https://avatars.githubusercontent.com/u/90453592?v=4",
+	"repo": "https://github.com/sankej/scripts",
+	"apps": [
+		{
+			"id": "gistBackup",
+			"name": "Gist备份",
+			"keys": [
+				"@gist.token",
+				"@gist.username"
+			],
+			"author": "@SankeJ",
+			"icons": [
+				"https://raw.githubusercontent.com/58xinian/icon/master/Github.png",
+				"https://raw.githubusercontent.com/58xinian/icon/master/Github.png"
+			],
+			"descs_html": [
+				"Token的获取方式:",
+				"头像菜单->\n      Settings ->\n      Developer settings ->\n      Personal access tokens ->\n      Generate new token ->\n      在里面找到 gist 勾选提交"
+			],
+			"scripts": [
+				{
+					"name": "备份 Gist",
+					"script": "https://raw.githubusercontent.com/sankej/surge/main/script/gist_backup.js"
+				},
+				{
+					"name": "从 Gist 恢复",
+					"script": "https://raw.githubusercontent.com/sankej/surge/main/script/gist_restore.js"
+				}
+			],
+			"settings": [
+				{
+					"id": "@gist.username",
+					"name": "用户名",
+					"val": null,
+					"type": "text",
+					"placeholder": "github 用户名",
+					"desc": "必填"
+				},
+				{
+					"id": "@gist.token",
+					"name": "Personal access tokens",
+					"val": null,
+					"type": "text",
+					"placeholder": "github personal access tokens",
+					"desc": "必填"
+				}
+			]
+		},
+		{
+			"id": "ql",
+			"name": "青龙同步",
+			"keys": [
+				"@ql.ip",
+				"@ql.username",
+				"@ql.password",
+				"@ql.env_keys",
+				"@ql.mute"
+			],
+			"settings": [
+				{
+					"id": "@ql.mute",
+					"name": "静音",
+					"val": false,
+					"type": "boolean",
+					"desc": "同步时，不会执行通知提示"
+				},
+				{
+					"id": "@ql.ip",
+					"name": "青龙登陆的域名或IP:端口号",
+					"val": "",
+					"type": "text",
+					"placeholder": "111.21.0.32:5700"
+				},
+				{
+					"id": "@ql.username",
+					"name": "账号",
+					"val": "",
+					"type": "text"
+				},
+				{
+					"id": "@ql.password",
+					"name": "密码",
+					"val": "",
+					"type": "text"
+				},
+				{
+					"id": "@ql.env_keys",
+					"name": "需要同步的env key",
+					"val": "",
+					"type": "textarea",
+					"autoGrow": false,
+					"rows": 8,
+					"placeholder": "['CookiesJD', 'smzdm_cookie']",
+					"desc": "需要同步的env key (JSON 格式)"
+				}
+			],
+			"icons": [
+				"https://raw.githubusercontent.com/sankej/scripts/main/images/qinglong.jpeg",
+				"https://raw.githubusercontent.com/sankej/scripts/main/images/qinglong.jpeg"
+			],
+			"author": "@SankeJ",
+			"repo": "https://raw.githubusercontent.com/sankej/surge/main/script/ql_cookie_sync.js",
+			"scripts": [
+				{
+					"name": "BoxJS同步到青龙",
+					"script": "https://raw.githubusercontent.com/sankej/surge/main/script/ql_cookie_sync.js"
+				}
+			],
+			"descs_html": [
+				"青龙 docker 的安装方式请移步 tg 频道",
+				"青龙 docker 作者仓库：【<a href=\"https://github.com/whyour\">github</a>】",
+				"青龙 docker 频道：【<a href=\"https://t.me/qiongqiya\">电报频道</a>】"
+			]
+		},
+		{
+			"id": "JD_Cookies",
+			"name": "京东账号",
+			"keys": [
+				"CookiesJD",
+				"cks_get_mute"
+			],
+			"descs_html": [
+				"请勿随意在输入框修改内容，建议通过脚本去获取cookie，若要修改，请按照JSON 格式修改（<a href=\"https://www.bejson.com/json/format\">可使用此JSON校验</a> ，或点击右上角按钮🔘进行校验(如有弹窗提示则为异常JSON)）。",
+				"示例：[{\"userName\":\"jd_xxx\",\"cookie\":\"pt_key=AAJ;pt_pin=jd_xxx;\"},{\"userName\":\"jd_66\",\"cookie\":\"pt_key=AAJ;pt_pin=jd_66;\"}]",
+				"脚本地址【<a href=\"https://jdsharedresourcescdn.azureedge.net/jdresource/JD_extra_cookie.js\">京东多 CK获取</a>】,并按照此脚本注释进行配置",
+				"使用方式【<a href=\"https://home.m.jd.com/myJd/newhome.action\">个人中心</a>】获取对应的数据Code",
+				"注1：如与NobyDa的京东cookie重复，建议在此处删除重复的cookie",
+				"注2：删除条件，是用来清除不需要的ck，条件值为京东 ck 的第几个，如第一个：1，第二个：2；多个请使用,分割。删除ck 脚本不会去清理野比的ck，请谨慎使用。删除成功之后，请手动刷新 boxjs"
+			],
+			"settings": [
+				{
+					"id": "cks_get_mute",
+					"name": "静音获取",
+					"val": false,
+					"type": "boolean",
+					"desc": "更新时，不会执行通知提示"
+				},
+				{
+					"id": "del_condition",
+					"name": "删除条件",
+					"val": "",
+					"type": "text",
+					"desc": "输入的条件,运行一次之后则会清空条件"
+				},
+				{
+					"id": "CookiesJD",
+					"name": "CK 列表",
+					"val": "",
+					"type": "textarea",
+					"autoGrow": false,
+					"rows": 8,
+					"desc": "CK 列表 (JSON 格式)"
+				}
+			],
+			"icons": [
+				"https://raw.githubusercontent.com/Orz-3/mini/master/jd.png",
+				"https://raw.githubusercontent.com/Orz-3/task/master/jd.png"
+			],
+			"author": "@dompling",
+			"repo": "https://github.com/dompling/Script/blob/master/jd/JD_extra.js",
+			"scripts": [
+				{
+					"name": "删除相关 ck",
+					"script": "https://raw.githubusercontent.com/dompling/Script/master/jd/jd_ck_del.js"
+				}
+			]
+		},
+		{
+			"id": "blackmatrix7.eleme",
+			"name": "饿了么",
+			"keys": [
+				"eleme_app_cookie",
+				"eleme_app_longitude",
+				"eleme_app_latitude"
+			],
+			"author": "@blackmatrix7",
+			"repo": "https://github.com/blackmatrix7/ios_rule_script/tree/master/script/eleme",
+			"icons": [
+				"https://raw.githubusercontent.com/Orz-3/mini/master/Alpha/elem.png",
+				"https://raw.githubusercontent.com/Orz-3/mini/master/Color/elem.png"
+			],
+			"scripts": [
+				{
+					"name": "领取吃货豆",
+					"script": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/eleme/eleme_daily.js"
+				},
+				{
+					"name": "领取会员任务",
+					"script": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/eleme/eleme_mission.js"
+				}
+			],
+			"settings": [
+				{
+					"id": "eleme_app_cookie",
+					"name": "cookie",
+					"val": "",
+					"type": "text"
+				},
+				{
+					"id": "eleme_app_longitude",
+					"name": "longitude",
+					"val": "",
+					"type": "text"
+				},
+				{
+					"id": "eleme_app_latitude",
+					"name": "latitude",
+					"val": "",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"id": "blackmatrix7.smzdm",
+			"name": "什么值得买",
+			"keys": [
+				"smzdm_cookie",
+				"smzdm_session"
+			],
+			"author": "@blackmatrix7",
+			"repo": "https://github.com/blackmatrix7/ios_rule_script/tree/master/script/smzdm",
+			"icons": [
+				"https://raw.githubusercontent.com/Orz-3/mini/master/Alpha/smzdm.png",
+				"https://raw.githubusercontent.com/Orz-3/mini/master/Color/smzdm.png"
+			],
+			"scripts": [
+				{
+					"name": "每日自动任务",
+					"script": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/smzdm/smzdm_mission.js"
+				},
+				{
+					"name": "每日自动签到",
+					"script": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/smzdm/smzdm_signin.js"
+				}
+			],
+			"settings": [
+				{
+					"id": "smzdm_cookie",
+					"name": "cookie",
+					"val": "",
+					"type": "text"
+				},
+				{
+					"id": "smzdm_session",
+					"name": "session",
+					"val": "",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"id": "JD_jr_Cookies",
+			"name": "金融领豆",
+			"keys": [
+				"@jd_jr.cookies",
+				"@jd_jr.bodys"
+			],
+			"descs_html": [
+				"请勿随意在输入框修改内容，只能通过脚本去获取cookie，若要修改，请按照JSON 格式修改（<a href=\"https://www.bejson.com/json/format\">可使用此JSON校验</a> ，或点击右上角按钮🔘进行校验(如有弹窗提示则为异常JSON)）。",
+				"仅能修改phoneNumber内容",
+				"JSON示例：[{phoneNumber: \"13348751678\", username: \"yaya\" }]"
+			],
+			"settings": [
+				{
+					"id": "@jd_jr.cookies",
+					"name": "CK 列表",
+					"val": "",
+					"type": "textarea",
+					"autoGrow": true,
+					"rows": 8,
+					"desc": "CK 列表 (JSON 格式)"
+				}
+			],
+			"icons": [
+				"https://raw.githubusercontent.com/Orz-3/mini/master/jd.png",
+				"https://raw.githubusercontent.com/Orz-3/task/master/jd.png"
+			],
+			"author": "@dompling",
+			"repo": "https://github.com/dompling/Script/blob/master/jd/jd_jr_cookie.js",
+			"script": "https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_sign.js"
+		}
+	]
+}
