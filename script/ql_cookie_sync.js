@@ -4,41 +4,45 @@
  */
 
 const $ = new API('ql', true)
-const $ql = new QL_API();
+const $ql = new QL_API()
 
 const title = '🐉 通知提示'
-const notify_log = ''
-const envKeys = JSON.parese($.read('#env_keys') || '[]')
+let notify_log = ''
+const envKeys = JSON.parse($.read('env_keys') || '[]')
 const envData = envKeys
   .map((key) => {
     const value = $.read(`#${key}`)
-    const isArr = /^\[.+\]$/.test(value)
-    if (isArr) {
-      return JSON.parse(value).map(({ userName, cookie }) => ({ name: 'JD_COOKIE', value: cookie, remarks: userName }))
+    if (isJsonArrString(value)) {
+      return JSON.parse(value).map(({ userName, cookie }) => ({
+        name: 'JD_COOKIE',
+        value: cookie,
+        remarks: userName,
+      }))
     }
     return {
       name: key,
       value: value || '',
-      remarks: ''
+      remarks: '',
     }
   })
   .flat()
 
-  ; (async () => {
+;(async () => {
+  try {
     await $ql.login()
     $.info(`青龙cookie登入同步`)
 
-    envData.forEach(env => {
+    for (const env of envData) {
       const { data: qlEnvs } = await $ql.getEnvs(env.name)
       let response
 
       if (qlEnvs && qlEnvs.length) {
-        const qlEnv = qlEnvs.length === 1
-          ? qlEnvs[0]
-          : qlEnvs.find(item => item.remarks === env.remarks)
+        const qlEnv =
+          qlEnvs.length > 1 ? qlEnvs.find((item) => item.remarks === env.remarks) : qlEnvs[0]
 
         if (qlEnv.value === env.value) {
-          return notify_log += $.info(`${env.name}-${env.remarks}: 无需更新`)
+          notify_log += $.info(`${env.name}-${env.remarks}: 无需更新\n`)
+          continue
         }
 
         response = await $ql.editEnvs({ ...env, _id: qlEnv._id })
@@ -47,22 +51,21 @@ const envData = envKeys
       }
 
       if (response.code === 200) {
-        notify_log += $.info(`${env.name}-${env.remarks}: 同步青龙成功`)
+        notify_log += $.info(`${env.name}-${env.remarks}: 同步青龙成功\n`)
       } else {
-        notify_log += $.info(`${env.name}-${env.remarks}: 同步青龙失败`)
+        notify_log += $.info(`${env.name}-${env.remarks}: 同步青龙失败\n`)
       }
-    })
+    }
 
     if ($.read('mute') !== 'true') {
-      return $.notify(title, '', notify_log)
+      return $.notify(title, '同步青龙', notify_log)
     }
-  })()
-    .catch((e) => {
-      $.log(JSON.stringify(e))
-    })
-    .finally(() => {
-      $.done()
-    })
+    $.done()
+  } catch (e) {
+    $.info(JSON.stringify(e))
+    $.done()
+  }
+})()
 
 function ENV() {
   const isQX = typeof $task !== 'undefined'
@@ -91,9 +94,9 @@ function HTTP(defaultOptions = { baseURL: '' }) {
     const timeout = options.timeout
     const events = {
       ...{
-        onRequest: () => { },
+        onRequest: () => {},
         onResponse: (resp) => resp,
-        onTimeout: () => { },
+        onTimeout: () => {},
       },
       ...options.events,
     }
@@ -138,19 +141,19 @@ function HTTP(defaultOptions = { baseURL: '' }) {
     let timeoutid
     const timer = timeout
       ? new Promise((_, reject) => {
-        timeoutid = setTimeout(() => {
-          events.onTimeout()
-          return reject(`${method} URL: ${options.url} exceeds the timeout ${timeout} ms`)
-        }, timeout)
-      })
+          timeoutid = setTimeout(() => {
+            events.onTimeout()
+            return reject(`${method} URL: ${options.url} exceeds the timeout ${timeout} ms`)
+          }, timeout)
+        })
       : null
 
     return (
       timer
         ? Promise.race([timer, worker]).then((res) => {
-          clearTimeout(timeoutid)
-          return res
-        })
+            clearTimeout(timeoutid)
+            return res
+          })
         : worker
     ).then((resp) => events.onResponse(resp))
   }
@@ -206,14 +209,18 @@ function API(name = 'untitled', debug = false) {
         // create a json for root cache
         let fpath = 'root.json'
         if (!this.node.fs.existsSync(fpath)) {
-          this.node.fs.writeFileSync(fpath, JSON.stringify({}), { flag: 'wx' }, (err) => console.log(err))
+          this.node.fs.writeFileSync(fpath, JSON.stringify({}), { flag: 'wx' }, (err) =>
+            console.log(err),
+          )
         }
         this.root = {}
 
         // create a json file with the given name if not exists
         fpath = `${this.name}.json`
         if (!this.node.fs.existsSync(fpath)) {
-          this.node.fs.writeFileSync(fpath, JSON.stringify({}), { flag: 'wx' }, (err) => console.log(err))
+          this.node.fs.writeFileSync(fpath, JSON.stringify({}), { flag: 'wx' }, (err) =>
+            console.log(err),
+          )
           this.cache = {}
         } else {
           this.cache = JSON.parse(this.node.fs.readFileSync(`${this.name}.json`))
@@ -227,7 +234,9 @@ function API(name = 'untitled', debug = false) {
       if (isQX) $prefs.setValueForKey(data, this.name)
       if (isLoon || isSurge) $persistentStore.write(data, this.name)
       if (isNode) {
-        this.node.fs.writeFileSync(`${this.name}.json`, data, { flag: 'w' }, (err) => console.log(err))
+        this.node.fs.writeFileSync(`${this.name}.json`, data, { flag: 'w' }, (err) =>
+          console.log(err),
+        )
         this.node.fs.writeFileSync('root.json', JSON.stringify(this.root), { flag: 'w' }, (err) =>
           console.log(err),
         )
@@ -313,7 +322,9 @@ function API(name = 'untitled', debug = false) {
       }
       if (isNode || isScriptable) {
         const content_ =
-          content + (openURL ? `\n点击跳转: ${openURL}` : '') + (mediaURL ? `\n多媒体: ${mediaURL}` : '')
+          content +
+          (openURL ? `\n点击跳转: ${openURL}` : '') +
+          (mediaURL ? `\n多媒体: ${mediaURL}` : '')
         if (isJSBox) {
           const push = require('push')
           push.schedule({
@@ -361,25 +372,24 @@ function API(name = 'untitled', debug = false) {
 function QL_API() {
   return new (class QL {
     constructor() {
-      this.$ = new API('ql', true);
-      const ipAddress = this.$.read('ip') || '';
-      this.baseURL = `http://${ipAddress}`;
+      this.$ = new API('ql', true)
+      const ipAddress = this.$.read('ip') || ''
+      this.baseURL = `http://${ipAddress}`
       this.account = {
         password: this.$.read('password'),
         username: this.$.read('username'),
-      };
-      if (!this.account.password || !this.account.username)
-        return (this.ql = false);
+      }
+      if (!this.account.password || !this.account.username) return (this.ql = false)
     }
 
-    ql = true;
+    ql = true
     headers = {
       'Content-Type': `application/json;charset=UTF-8`,
       Authorization: '',
-    };
+    }
 
     getURL(key = '') {
-      return `${this.baseURL}/api/envs${key}`;
+      return `${this.baseURL}/api/envs${key}`
     }
 
     login() {
@@ -387,22 +397,22 @@ function QL_API() {
         headers: this.headers,
         body: JSON.stringify(this.account),
         url: `${this.baseURL}/api/login`,
-      };
+      }
       return this.$.http.post(opt).then((response) => {
-        const loginRes = JSON.parse(response.body);
+        const loginRes = JSON.parse(response.body)
         if (loginRes.code !== 200) {
-          return this.$.notify(title, '', loginRes.msg);
+          return this.$.notify(title, '', loginRes.msg)
         }
-        this.headers.Authorization = `Bearer ${loginRes.data.token}`;
-      });
+        this.headers.Authorization = `Bearer ${loginRes.data.token}`
+      })
     }
 
     getEnvs(keyword = '') {
       const opt = {
         url: this.getURL() + `?searchValue=${keyword}`,
         headers: this.headers,
-      };
-      return this.$.http.get(opt).then((response) => JSON.parse(response.body));
+      }
+      return this.$.http.get(opt).then((response) => JSON.parse(response.body))
     }
 
     addEnvs(cookies) {
@@ -410,10 +420,8 @@ function QL_API() {
         url: this.getURL(),
         headers: this.headers,
         body: JSON.stringify(cookies),
-      };
-      return this.$.http
-        .post(opt)
-        .then((response) => JSON.parse(response.body));
+      }
+      return this.$.http.post(opt).then((response) => JSON.parse(response.body))
     }
 
     editEnvs(ids) {
@@ -421,8 +429,8 @@ function QL_API() {
         url: this.getURL(),
         headers: this.headers,
         body: JSON.stringify(ids),
-      };
-      return this.$.http.put(opt).then((response) => JSON.parse(response.body));
+      }
+      return this.$.http.put(opt).then((response) => JSON.parse(response.body))
     }
 
     delEnvs(ids) {
@@ -430,10 +438,8 @@ function QL_API() {
         url: this.getURL(),
         headers: this.headers,
         body: JSON.stringify(ids),
-      };
-      return this.$.http
-        .delete(opt)
-        .then((response) => JSON.parse(response.body));
+      }
+      return this.$.http.delete(opt).then((response) => JSON.parse(response.body))
     }
 
     disabled(ids) {
@@ -441,8 +447,8 @@ function QL_API() {
         url: this.getURL(`/disable`),
         headers: this.headers,
         body: JSON.stringify(ids),
-      };
-      return this.$.http.put(opt).then((response) => JSON.parse(response.body));
+      }
+      return this.$.http.put(opt).then((response) => JSON.parse(response.body))
     }
 
     enabledEnvs(ids) {
@@ -450,121 +456,22 @@ function QL_API() {
         url: this.getURL(`/enable`),
         headers: this.headers,
         body: JSON.stringify(ids),
-      };
-      return this.$.http.put(opt).then((response) => JSON.parse(response.body));
+      }
+      return this.$.http.put(opt).then((response) => JSON.parse(response.body))
     }
 
     getUsername(ck) {
-      if (!ck) return '';
-      console.log(ck);
-      return decodeURIComponent(ck.match(/pt_pin=(.+?);/)[1]);
+      if (!ck) return ''
+      console.log(ck)
+      return decodeURIComponent(ck.match(/pt_pin=(.+?);/)[1])
     }
+  })()
+}
 
-    async asyncWSCoookie(cookieValue) {
-      try {
-        await this.login();
-        console.log(`青龙wskey登陆同步`);
-        if (this.headers.Authorization) {
-          let qlCk = await this.getEnvs('JD_WSCK');
-          if (!qlCk.data) return;
-          qlCk = qlCk.data;
-          const DecodeName = this.getUsername(cookieValue);
-          const current = qlCk.find(
-            (item) => getUsername(item.value) === DecodeName,
-          );
-          if (current && current.value === cookieValue) {
-            console.log('该账号无需更新');
-            return;
-          }
-          let nickName = '';
-          const remarks = remark.find((item) => item.username === DecodeName);
-          if (remarks && remarks.nickname) nickName = remarks.nickname;
-          let response;
-          if (current) {
-            current.value = cookieValue;
-            response = await this.editEnvs({
-              name: 'JD_WSCK',
-              remarks: current.remarks || nickName,
-              value: cookieValue,
-              _id: current._id,
-            });
-            response = await this.enabledEnvs([current._id]);
-          } else {
-            response = await this.addEnvs([
-              { name: 'JD_WSCK', value: cookieValue, remarks: nickName },
-            ]);
-          }
-          console.log(JSON.stringify(response));
-          if ($.mute === 'true' && response.code === 200) {
-            return console.log(
-              '用户名: ' + DecodeName + '同步wskey更新青龙成功🎉',
-            );
-          } else if (response.code === 200) {
-            this.$.notify(
-              '用户名: ' + DecodeName,
-              '',
-              '同步wskey更新青龙成功🎉',
-            );
-          } else {
-            console.log('青龙同步失败');
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
-    async asyncCoookie(cookieValue) {
-      try {
-        await this.login();
-        console.log(`青龙cookie登陆同步`);
-        if (this.headers.Authorization) {
-          let qlCk = await this.getEnvs('JD_COOKIE');
-          if (!qlCk.data) return;
-          qlCk = qlCk.data;
-          const DecodeName = this.getUsername(cookieValue);
-          const current = qlCk.find(
-            (item) => getUsername(item.value) === DecodeName,
-          );
-          if (current && current.value === cookieValue) {
-            console.log('该账号无需更新');
-            return;
-          }
-
-          let response;
-          if (current) {
-            current.value = cookieValue;
-            response = await this.editEnvs({
-              name: 'JD_COOKIE',
-              remarks: current.remarks,
-              value: cookieValue,
-              _id: current._id,
-            });
-            response = await this.enabledEnvs([current._id]);
-          } else {
-            response = await this.addEnvs([
-              { name: 'JD_COOKIE', value: cookieValue },
-            ]);
-          }
-
-          console.log(JSON.stringify(response));
-          if ($.mute === 'true' && response.code === 200) {
-            return console.log(
-              '用户名: ' + DecodeName + '同步Cookie更新青龙成功🎉',
-            );
-          } else if (response.code === 200) {
-            this.$.notify(
-              '用户名: ' + DecodeName,
-              '',
-              '同步Cookie更新青龙成功🎉',
-            );
-          } else {
-            console.log('青龙同步失败');
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  })();
+function isJsonArrString(str) {
+  try {
+    return Array.isArray(JSON.parse(str))
+  } catch (e) {
+    return false
+  }
 }

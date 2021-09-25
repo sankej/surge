@@ -253,6 +253,40 @@
 			]
 		},
 		{
+			"id": "Airport",
+			"name": "机场",
+			"keys": [
+				"airtcp_cookie",
+				"cnix_cookie"
+			],
+			"author": "@SankeJ",
+			"repo": "https://raw.githubusercontent.com/sankej/surge/main/script/airport_checkin.js",
+			"icons": [
+				"https://raw.githubusercontent.com/Orz-3/mini/master/Color/airport.png",
+				"https://raw.githubusercontent.com/Orz-3/mini/master/Color/airport.png"
+			],
+			"scripts": [
+				{
+					"name": "每日自动签到",
+					"script": "https://raw.githubusercontent.com/sankej/surge/main/script/airport_checkin.js"
+				}
+			],
+			"settings": [
+				{
+					"id": "airtcp_cookie",
+					"name": "airtcp_cookie",
+					"val": "",
+					"type": "text"
+				},
+				{
+					"id": "cnix_cookie",
+					"name": "cnix_cookie",
+					"val": "",
+					"type": "text"
+				}
+			]
+		},
+		{
 			"id": "JD_jr_Cookies",
 			"name": "金融领豆",
 			"keys": [

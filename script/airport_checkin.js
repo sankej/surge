@@ -40,7 +40,7 @@ const airportOption = {
     cookieKey: cnixCookieKey,
     url: 'https://sgi.anycast.gay/user/checkin',
     headers: headers.cnix,
-    callback: getAirTcpTraffic,
+    callback: getCnixTraffic,
   },
 }
 const sleep = (e) => new Promise((t) => setTimeout(t, e))
@@ -124,9 +124,9 @@ function getAirTcpTraffic(cookie, headers) {
   })
 }
 
-// function getCnixTraffic(cookie, headers, data) {
-//   console.log(data)
-// }
+function getCnixTraffic(cookie, headers, data) {
+  console.log(data)
+}
 
 ;(async () => {
   if (isRequest() && $script.type === 'http-request') {
