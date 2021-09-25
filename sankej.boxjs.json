@@ -99,8 +99,8 @@
 				}
 			],
 			"icons": [
-				"https://raw.githubusercontent.com/sankej/scripts/main/images/qinglong.jpeg",
-				"https://raw.githubusercontent.com/sankej/scripts/main/images/qinglong.jpeg"
+				"https://github.com/sankej/surge/blob/main/images/qinglong.png?raw=true",
+				"https://github.com/sankej/surge/blob/main/images/qinglong.png?raw=true"
 			],
 			"author": "@SankeJ",
 			"repo": "https://raw.githubusercontent.com/sankej/surge/main/script/ql_cookie_sync.js",
