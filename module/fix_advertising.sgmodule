@@ -2,4 +2,4 @@
 #!desc=修复Advertising MITM by Sankej
 
 [MITM]
-hostname = %INSERT% -pan.baidu.com,-passport.baidu.com
+hostname = %INSERT% -pan.baidu.com, -passport.baidu.com, -guide-acs.m.taobao.com
