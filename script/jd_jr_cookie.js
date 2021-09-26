@@ -24,33 +24,25 @@ http-request ^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat ta
  */
 const $ = new API('jd_jr', true)
 const title = '金融领豆'
-const cookiesKey = 'cookies'
-const bodyKey = 'bodys'
+const cookiesKey = '#JRBODY'
 const cookies = JSON.parse($.read(cookiesKey) || '[]')
-const bodys = JSON.parse($.read(bodyKey) || '{}')
 async function getCookies() {
   if ($request.headers && $request.url.indexOf('m/userstat') > -1) {
     const currentCk = $request.headers['Cookie'] || $request.headers['cookie']
     const currentBody = $request.body
-    const saveCookie = {
-      phoneNumber: '',
-      username: '',
-    }
     if (currentCk.match(/(pt_key=.+?pt_pin=|pt_pin=.+?pt_key=)/)) {
       const cookieValue = currentCk.match(/pt_key=.+?;/) + currentCk.match(/pt_pin=.+?;/)
       const userName = cookieValue.match(/pt_pin=(.+?);/)[1]
-      bodys[userName] = currentBody
-      saveCookie.username = userName
-      if (cookies.find((item) => item.username === userName)) return
-      const pRes = await getPhoneNumber(cookieValue)
-      if (pRes.resultCode === 0) {
-        saveCookie.phoneNumber = pRes.resultData.mobile
-      }
-      cookies.push(saveCookie)
+
+      if (cookies.find((item) => item.userName === userName)) return
+
+      cookies.push({
+        userName,
+        cookie: `reqData=${currentBody}`,
+      })
+
       $.log(cookies)
-      const cacheValue = JSON.stringify(cookies, null, '\t')
-      $.write(cacheValue, cookiesKey)
-      $.write(JSON.stringify(bodys), bodyKey)
+      $.write(JSON.stringify(cookies), cookiesKey)
       $.notify(title, '', `${userName}：获取Cookie成功 🎉`)
     }
   }

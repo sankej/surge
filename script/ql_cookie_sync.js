@@ -14,7 +14,7 @@ const envData = envKeys
     const value = $.read(`#${key}`)
     if (isJsonArrString(value)) {
       return JSON.parse(value).map(({ userName, cookie }) => ({
-        name: 'JD_COOKIE',
+        name: key === 'CookiesJD' ? 'JD_COOKIE' : key,
         value: cookie,
         remarks: userName,
       }))
