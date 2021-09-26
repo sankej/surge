@@ -38,11 +38,11 @@ async function getCookies() {
 
       cookies.push({
         userName,
-        cookie: `reqData=${JSON.stringify(currentBody)}`,
+        cookie: `reqData=${currentBody}`,
       })
 
       $.log(cookies)
-      $.write(cookies, cookiesKey)
+      $.write(JSON.stringify(cookies, null, `\t`), cookiesKey)
       $.notify(title, '', `${userName}：获取Cookie成功 🎉`)
     }
   }
