@@ -285,31 +285,6 @@
 					"type": "text"
 				}
 			]
-		},
-		{
-			"id": "JD_jr_Cookies",
-			"name": "京东金融",
-			"keys": [
-				"JRBODY"
-			],
-			"settings": [
-				{
-					"id": "JRBODY",
-					"name": "CK 列表",
-					"val": "",
-					"type": "textarea",
-					"autoGrow": true,
-					"rows": 8,
-					"desc": "CK 列表 (JSON 格式)"
-				}
-			],
-			"icons": [
-				"https://raw.githubusercontent.com/Orz-3/mini/master/jd.png",
-				"https://raw.githubusercontent.com/Orz-3/task/master/jd.png"
-			],
-			"author": "@SankeJ",
-			"repo": "https://raw.githubusercontent.com/sankej/surge/main/script/jd_jr_cookie.js",
-			"script": "https://raw.githubusercontent.com/sankej/surge/main/script/jd_jr_cookie.js"
 		}
 	]
 }
