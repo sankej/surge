@@ -34,12 +34,14 @@ const envData = envKeys
 
     for (const env of envData) {
       const { data: qlEnvs } = await $ql.getEnvs(env.name)
+      const qlEnv =
+        (qlEnvs && qlEnvs.length > 1
+          ? qlEnvs.find((item) => item.remarks === env.remarks)
+          : qlEnvs[0]) || false
+
       let response
 
-      if (qlEnvs && qlEnvs.length) {
-        const qlEnv =
-          qlEnvs.length > 1 ? qlEnvs.find((item) => item.remarks === env.remarks) : qlEnvs[0]
-
+      if (qlEnv) {
         if (qlEnv.value === env.value) {
           notify_log += $.info(`${env.name}-${env.remarks}: 无需更新\n`)
           continue
