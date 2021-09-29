@@ -5,6 +5,3 @@
 # boxjs
 Boxjs_Gist_备份 = type=cron,cronexp=30 0 * * *,script-path=https://raw.githubusercontent.com/sankej/surge/main/script/gist_backup.js,script-update-interval=0
 Boxjs同步env到青龙 = type=cron,cronexp=0 0 * * *,script-path=https://raw.githubusercontent.com/sankej/surge/main/script/ql_cookie_sync.js,script-update-interval=0
-
-# zq
-中青快速阅读 = type=cron,cronexp=8/30 * 1-6 * * *,script-path=https://raw.githubusercontent.com/ztxtop/x/main/zqread.js,script-update-interval=0
