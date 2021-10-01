@@ -17,8 +17,5 @@
 # WPS
 WPS_获取Cookie = type=http-request,pattern=^https:\/\/music.163.com\/weapi\/user\/level,script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/neteasemusic/quanx/neteasemusic.cookie.js,requires-body=true
 
-# NeteaseMusic
-网易云获取cookie = type=http-request,pattern=^https:\/\/music.163.com\/weapi\/user\/level,requires-body=true,script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/neteasemusic/neteasemusic.cookie.js
-
 [MITM]
-hostname = %APPEND% me-api.jd.com, airtcp.vip, h5.ele.me, zhiyou.smzdm.com, zt.wps.cn, music.163.com
+hostname = %APPEND% me-api.jd.com, airtcp.vip, h5.ele.me, zhiyou.smzdm.com, zt.wps.cn
