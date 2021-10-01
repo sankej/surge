@@ -287,30 +287,6 @@
 			]
 		},
 		{
-			"id": "WPS",
-			"name": "WPS",
-			"keys": [
-				"chavy_signhomeurl_wps",
-				"chavy_signhomeheader_wps"
-			],
-			"settings": [
-				{
-					"id": "CFG_wps_inviteTime",
-					"name": "邀请间隔 (毫秒)",
-					"val": 2000,
-					"type": "number",
-					"desc": "每次邀请间隔时间"
-				}
-			],
-			"author": "@chavyleung",
-			"repo": "https://github.com/chavyleung/scripts/tree/master/wps",
-			"script": "https://raw.githubusercontent.com/chavyleung/scripts/master/wps/wps.js",
-			"icons": [
-				"https://raw.githubusercontent.com/Orz-3/mini/master/Alpha/wps.png",
-				"https://raw.githubusercontent.com/Orz-3/mini/master/Color/wps.png"
-			]
-		},
-		{
 			"id": "zZ.UnblockURLinWeChat",
 			"name": "解除微信链接限制",
 			"keys": [
