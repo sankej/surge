@@ -65,7 +65,8 @@ const radioGeneration = {
   const body = {
     title: wifi.ssid || `Cellular Data`,
     content:
-      `IP: ${ip} \nExternal IP: ${externalIP}\n` + (wifi.ssid ? `Route: ${router}` : cellularInfo),
+      `IP: ${ip} \nExternal IP: ${externalIP}\n` +
+      (wifi.ssid ? `Route: ${router}` : `ISP: ${cellularInfo}`),
     icon: wifi.ssid ? 'wifi' : 'antenna.radiowaves.left.and.right',
   }
   $.done(body)
