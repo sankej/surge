@@ -4,13 +4,13 @@
 
 [Panel]
 # Surge 网络信息面板 by Peng-YM
-net-info-panel=title="网络状态",content="请刷新",style=info,script-name=net-info-panel,update-interval=1
+net-info-panel=title="Network INfo",content="Please refresh",style=info,script-name=net-info-panel, update-interval=1
 
 # DNS by zZPiglet
-flushDNS = script-name=flushDNS,update-interval=600
+flushDNS = script-name=flushDNS, title="DNS Flush", content="Please refresh", update-interval=600
 
 # Netflix Unlock Check by Hyseen
-nf_check = script-name=nf_check, title="Netflix 解锁检测", content="请刷新", update-interval=1
+nf_check = script-name=nf_check, title="Netflix Unlock check", content="Please refresh", update-interval=1
 
 [Script]
 net-info-panel= type=generic, script-path=https://raw.githubusercontent.com/sankej/surge/main/script/network_info_panel.js
