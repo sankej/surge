@@ -376,7 +376,7 @@ function QL_API() {
     constructor() {
       this.$ = new API('ql', true)
       const ipAddress = this.$.read('ip') || ''
-      this.baseURL = `https://${ipAddress}`
+      this.baseURL = `http://${ipAddress}`
       this.account = {
         password: this.$.read('password'),
         username: this.$.read('username'),
