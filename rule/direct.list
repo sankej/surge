@@ -5,6 +5,9 @@ IP-CIDR,223.5.5.5/32,no-resolve
 # tencent hk
 IP-CIDR,43.129.0.0/16,no-resolve
 
+# IPv6
+DOMAIN,api-ipv6.ip.sb
+
 # Fix advertising error
 # > WPS
 DOMAIN,dl.op.wpscdn.cn
