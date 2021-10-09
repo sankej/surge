@@ -12,3 +12,7 @@ DOMAIN,api-ipv6.ip.sb
 # > WPS
 DOMAIN,dl.op.wpscdn.cn
 DOMAIN,vipapi.wps.cn
+
+# Fix infinite requests through DNS masking
+# > MiJia
+DOMAIN,app.chat.xiaomi.net
