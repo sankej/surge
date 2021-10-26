@@ -12,3 +12,6 @@ DOMAIN,api-ipv6.ip.sb
 # > WPS
 DOMAIN,dl.op.wpscdn.cn
 DOMAIN,vipapi.wps.cn
+
+# Mail
+DOMAIN,p30-imap.mail.me.com
