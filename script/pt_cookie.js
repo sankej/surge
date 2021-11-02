@@ -8,7 +8,7 @@ const log = (msg, type = 'INFO') => console.log(`[${type}] [${scriptName}]\n${ms
 
 const getCookie = (cookieKey) => {
   try {
-    const cookie = $request.headers.Cookie
+    const cookie = $request.headers.cookie
     const preCookie = $persistentStore.read(cookieKey)
     const compareKey = !!cookie ? /key=([a-zA-Z0-9]*)/.exec(cookie)[1] : null
     const comparePreKey = !!preCookie ? /key=([a-zA-Z0-9]*)/.exec(preCookie)[1] : null
@@ -30,7 +30,7 @@ const getCookie = (cookieKey) => {
 ;(async () => {
   if (isRequest() && $script.type === 'http-request') {
     const cookieKey = cookieKeys.find((key) => $request.url.includes(key))
-    getCookie(cookieKey)
+    getCookie(`${cookieKey}_cookie`)
   }
   $done()
 })()
