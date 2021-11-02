@@ -9,6 +9,8 @@ const log = (msg, type = 'INFO') => console.log(`[${type}] [${scriptName}]\n${ms
 const getCookie = (cookieKey) => {
   try {
     const cookie = $request.headers.cookie
+    console.log(cookie)
+    console.log(cookieKey)
     const preCookie = $persistentStore.read(cookieKey)
     const compareKey = !!cookie
       ? /cf_clearance=([a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:|]*)/.exec(cookie)[1]
