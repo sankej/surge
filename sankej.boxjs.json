@@ -287,6 +287,33 @@
 			]
 		},
 		{
+			"id": "PT",
+			"name": "PT",
+			"keys": [
+				"hdarea_cookie",
+				"hdatmos_cookie"
+			],
+			"author": "@SankeJ",
+			"icons": [
+				"https://github.com/linuxserver/docker-templates/raw/master/linuxserver.io/img/qbittorrent-icon.png",
+				"https://github.com/linuxserver/docker-templates/raw/master/linuxserver.io/img/qbittorrent-icon.png"
+			],
+			"settings": [
+				{
+					"id": "hdarea_cookie",
+					"name": "hdarea_cookie",
+					"val": "",
+					"type": "text"
+				},
+				{
+					"id": "hdatmos_cookie",
+					"name": "hdatmos_cookie",
+					"val": "",
+					"type": "text"
+				}
+			]
+		},
+		{
 			"id": "zZ.UnblockURLinWeChat",
 			"name": "解除微信链接限制",
 			"keys": [
