@@ -10,8 +10,14 @@ const getCookie = (cookieKey) => {
   try {
     const cookie = $request.headers.cookie
     const preCookie = $persistentStore.read(cookieKey)
-    const compareKey = !!cookie ? /key=([a-zA-Z0-9]*)/.exec(cookie)[1] : null
-    const comparePreKey = !!preCookie ? /key=([a-zA-Z0-9]*)/.exec(preCookie)[1] : null
+    const compareKey = !!cookie
+      ? /cf_clearance=([a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:|]*)/.exec(cookie)[1]
+      : null
+    const comparePreKey = !!preCookie
+      ? /cf_clearance=([a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:|]*)/.exec(
+          preCookie,
+        )[1]
+      : null
 
     if (!preCookie || comparePreKey !== compareKey) {
       $persistentStore.write(cookie, cookieKey)
