@@ -32,7 +32,7 @@ const sync = (url) => {
 
 ;(async () => {
   try {
-    let urls = $persistentStore.read('gist_sync_url')
+    let urls = JSON.parse($persistentStore.read('gist_sync_url') || '[]')
     urls = urls.filter((item) => !item.includes(v4IP))
     for (const url of urls) {
       await sync(url)
