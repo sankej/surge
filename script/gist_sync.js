@@ -12,11 +12,11 @@ const sync = (url) => {
       headers: {
         'X-Key': $persistentStore.read('gist_examplekey'),
         Accept: '*/*',
-        body: {
-          script_text,
-          mock_type: 'cron',
-          timeout: 30,
-        },
+      },
+      body: {
+        script_text,
+        mock_type: 'cron',
+        timeout: 30,
       },
     }
 
