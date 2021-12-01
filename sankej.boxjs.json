@@ -10,7 +10,8 @@
 			"name": "Gist备份",
 			"keys": [
 				"@gist.token",
-				"@gist.username"
+				"@gist.username",
+				"gist_examplekey"
 			],
 			"author": "@SankeJ",
 			"icons": [
@@ -29,6 +30,10 @@
 				{
 					"name": "从 Gist 恢复",
 					"script": "https://raw.githubusercontent.com/sankej/surge/main/script/gist_restore.js"
+				},
+				{
+					"name": "Gist_Sync",
+					"script": "https://raw.githubusercontent.com/sankej/surge/main/script/gist_sync.js"
 				}
 			],
 			"settings": [
@@ -47,6 +52,24 @@
 					"type": "text",
 					"placeholder": "github personal access tokens",
 					"desc": "必填"
+				},
+				{
+					"id": "gist_examplekey",
+					"name": "examplekey",
+					"val": null,
+					"type": "text",
+					"placeholder": "examplekey",
+					"desc": "必填"
+				},
+				{
+					"id": "gist_sync_url",
+					"name": "需要同步的surge https api url",
+					"val": "",
+					"type": "textarea",
+					"autoGrow": false,
+					"rows": 5,
+					"placeholder": "['https://127.0.0.1:6171']",
+					"desc": "需要同步的surge https api url (JSON 格式)"
 				}
 			]
 		},
