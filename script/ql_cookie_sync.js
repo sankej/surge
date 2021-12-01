@@ -60,7 +60,7 @@ const envData = envKeys
     }
 
     if ($.read('mute') !== 'true') {
-      return $.notify(title, '同步青龙', notify_log)
+      $.notify(title, '同步青龙', notify_log)
     }
     $.done()
   } catch (e) {
