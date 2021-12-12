@@ -1,4 +1,21 @@
 # 软件屏蔽
+# > App
+PROCESS-NAME,/Applications/AMD Power Gadget.app/Contents/MacOS/AMD Power Gadget
+PROCESS-NAME,/Applications/Manico.app/Contents/MacOS/Manico
+PROCESS-NAME,/Applications/SideNotes.app/Contents/MacOS/SideNotes
+PROCESS-NAME,/Applications/AirBuddy.app/Contents/MacOS/AirBuddy
+PROCESS-NAME,/Applications/Xnip.app/Contents/MacOS/Xnip
+PROCESS-NAME,/Applications/Xnip.app/Contents/Library/LoginItems/XnipHelper.app/Contents/MacOS/XnipHelper
+PROCESS-NAME,/Applications/AnyGo.app/Contents/MacOS/AnyGo
+PROCESS-NAME,/Applications/Bartender 4.app/Contents/MacOS/Bartender 4
+PROCESS-NAME,/Applications/BetterTouchTool.app/Contents/MacOS/BetterTouchTool
+PROCESS-NAME,/Applications/DaisyDisk.app/Contents/MacOS/DaisyDisk
+PROCESS-NAME,/Applications/Downie 4.app/Contents/MacOS/Downie 4
+PROCESS-NAME,/Applications/Permute 3.app/Contents/MacOS/Permute 3
+PROCESS-NAME,/Applications/Dropover.app/Contents/MacOS/Dropover
+PROCESS-NAME,/Applications/infuse.app/Contents/MacOS/infuse
+PROCESS-NAME,/Applications/PDF Expert.app/Contents/MacOS/PDF Expert
+
 # > 屏蔽 AnyGo
 DOMAIN-SUFFIX,download.itoolab.com
 DOMAIN-SUFFIX,order.luckydogsoft.com
