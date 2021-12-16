@@ -59,6 +59,7 @@ tun-excluded-routes = %APPEND% 239.255.255.250/32
 ^https?:\/\/hypersnap\.mairuan\.com\/ https://www.hyperionics.com/ 302
 ^https?:\/\/(www.)?iconworkshop\.cn\/ https://www.axialis.com/ 302
 ^https?:\/\/(www.)?idmchina\.net\/ https://www.internetdownloadmanager.com/ 302
+^https?:\/\/(www.)?imazingchina\.com\/ https://imazing.com/zh 302
 ^https?:\/\/(www.)?imindmap\.cc\/ https://www.ayoa.com/previously-imindmap/ 302
 ^https?:\/\/(www.)?jihehuaban\.com\.cn\/ https://www.chartwellyorke.com/sketchpad/x24795.html 302
 ^https?:\/\/hypersnap\.mairuan\.com\/ https://www.keyshot.com/ 302
@@ -88,7 +89,7 @@ tun-excluded-routes = %APPEND% 239.255.255.250/32
 ^https?:\/\/api\.abema\.io\/v\d\/ip\/check - reject
 
 # bstar intl
-(^https?:\/\/app\.biliintl\.com\/(x\/)?(intl|dm|reply|history|v\d/msgfeed).+)(&s_locale=zh-Hans_[A-Z]{2})(.+)(&sim_code=\d+)(.+) $1&s_locale=zh-Hans_PH$5&sim_code=51503$7 header
+(^https?:\/\/app\.biliintl\.com\/(x\/)?(intl|dm|reply|history|v\d\/(fav|msgfeed)).+?)(&s_locale=zh-Hans_[A-Z]{2})(.+?)(&sim_code=\d+)(.+) $1&s_locale=zh-Hans_PH$6&sim_code=51503$8 header
 (^https?:\/\/passport\.biliintl\.com\/x\/intl\/passport-login\/.+)(&s_locale=zh-Hans_[A-Z]{2})(.+)(&sim_code=\d+)(.+) $1&s_locale=zh-Hans_PH$35&sim_code=51503$5 header
 
 # AICoin
@@ -104,3 +105,5 @@ hostname = %APPEND% www.google.cn,www.firefox.com.cn,api.abema.io,app.biliintl.c
 [Rule]
 # > 屏蔽HTTP3/QUIC UDP流量, 强制回退HTTP2/HTTP1.1
 AND,((PROTOCOL,UDP),(DEST-PORT,443)),REJECT-NO-DROP
+# Surge 的自动 REJECT 保护丢包，防止应用循环请求
+IP-CIDR,0.0.0.0/32,REJECT,no-resolve

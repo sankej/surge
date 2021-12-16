@@ -1,0 +1,16 @@
+#!name=Q-Search
+#!desc=Safari Search Add-ons.
+#!system=ios
+
+[URL Rewrite]
+^http://www\.google\.cn/search\?q=bd\+([^&]+).+ https://www.baidu.com/s?wd=$1 302
+^http://www\.google\.cn/search\?q=db\+([^&]+).+ https://m.douban.com/search/?query=$1 302
+^http://www\.google\.cn/search\?q=gh\+([^&]+).+ https://github.com/search?q=$1 302
+^http://www\.google\.cn/search\?q=gm\+([^&]+).+ https://www.google.com/search?&tbm=isch&q=$1 302
+^http://www\.google\.cn/search\?q=yd\+([^&]+).+ http://dict.youdao.com/search?q=$1 302
+^http://www\.google\.cn/search\?q=ddg\+([^&]+).+ https://duckduckgo.com/?ia=about&q=$1 302
+^http://www\.google\.cn/search\?q=lyq&.+ http://{{{GATEWAY_ADDRESS}}} 302
+^http://www\.google\.cn/search\?q=uus&.+ https://itunes.apple.com/WebObjects/MZStore.woa/wa/resetAndRedirect?dsf=143441&mt=8&url=/WebObjects/MZStore.woa/wa/viewSoftware?mt=8&id=1108187390&cc=us&urlDesc= 302
+^http://www\.google\.cn/search\?q=ccn&.+ https://itunes.apple.com/WebObjects/MZStore.woa/wa/resetAndRedirect?dsf=143465&mt=8&url=/WebObjects/MZStore.woa/wa/viewSoftware?mt=8&id=1108187390&cc=cn&urlDesc= 302
+^http://www\.google\.cn/search\?q=hhk&.+ https://itunes.apple.com/WebObjects/MZStore.woa/wa/resetAndRedirect?dsf=143463&mt=8&url=/WebObjects/MZStore.woa/wa/viewSoftware?mt=8&id=1108187390&cc=hk&urlDesc= 302
+^http://www\.google\.cn/search\?q=([^&]+).+ https://www.google.com/search?q=$1 302
