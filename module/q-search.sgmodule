@@ -2,6 +2,9 @@
 #!desc=Safari Search Add-ons.
 #!system=ios
 
+[MITM]
+hostname = %APPEND% www.google.cn
+
 [URL Rewrite]
 ^http://www\.google\.cn/search\?q=bd\+([^&]+).+ https://www.baidu.com/s?wd=$1 302
 ^http://www\.google\.cn/search\?q=db\+([^&]+).+ https://m.douban.com/search/?query=$1 302
