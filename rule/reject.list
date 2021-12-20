@@ -15,6 +15,13 @@ PROCESS-NAME,/Applications/Permute 3.app/Contents/MacOS/Permute 3
 PROCESS-NAME,/Applications/Dropover.app/Contents/MacOS/Dropover
 PROCESS-NAME,/Applications/infuse.app/Contents/MacOS/infuse
 PROCESS-NAME,/Applications/PDF Expert.app/Contents/MacOS/PDF Expert
+PROCESS-NAME,/Applications/Paste.app/Contents/MacOS/Paste
+PROCESS-NAME,/Applications/iRightMouse Pro.app/Contents/MacOS/iRightMouse Pro
+PROCESS-NAME,/Applications/iRightMouse Pro.app/Contents/PlugIns/iRightMouseService Pro.service
+PROCESS-NAME,/Applications/iRightMouse Pro.app/Contents/PlugIns/iRightMouseExtension Pro.appex
+PROCESS-NAME,/Applications/App Cleaner 7.app/Contents/MacOS/App Cleaner 7
+PROCESS-NAME,/Applications/Beyond Compare.app/Contents/MacOS/BCompare
+PROCESS-NAME,/Applications/WiFi Explorer Pro 3.app/Contents/MacOS/WiFi Explorer Pro 3
 
 # > 屏蔽 AnyGo
 DOMAIN-SUFFIX,download.itoolab.com
