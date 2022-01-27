@@ -47,7 +47,7 @@ const envData = envKeys
           continue
         }
 
-        response = await $ql.editEnvs({ ...env, _id: qlEnv._id })
+        response = await $ql.editEnvs({ ...env, id: qlEnv.id })
       } else {
         response = await $ql.addEnvs([env])
       }
