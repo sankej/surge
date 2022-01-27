@@ -398,7 +398,7 @@ function QL_API() {
       const opt = {
         headers: this.headers,
         body: JSON.stringify(this.account),
-        url: `${this.baseURL}/api/login`,
+        url: `${this.baseURL}/api/user/login`,
       }
       return this.$.http.post(opt).then((response) => {
         const loginRes = JSON.parse(response.body)
