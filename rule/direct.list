@@ -42,3 +42,5 @@ DOMAIN,p30-imap.mail.me.com
 DOMAIN,www.hd.ai
 DOMAIN,www.hdarea.co
 DOMAIN,greatposterwall.com
+IP-CIDR,104.21.93.45/32,no-resolve
+IP-CIDR,172.67.204.106/32,no-resolve
