@@ -49,6 +49,7 @@ IP-CIDR,172.67.204.106/32,no-resolve
 DOMAIN,ip.istatmenus.app
 
 # APNs
+DOMAIN,api.push.apple.com
 IP-CIDR,17.249.0.0/16,no-resolve
 IP-CIDR,17.252.0.0/16,no-resolve
 IP-CIDR,17.57.144.0/22,no-resolve
