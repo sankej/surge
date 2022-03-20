@@ -2,17 +2,8 @@
 #!desc=General by Sankej
 
 [General]
-# > Internet 测试 URL
-internet-test-url = http://wifi.vivo.com.cn/generate_204
-
 # > 跳过代理
 skip-proxy = %APPEND% passenger.t3go.cn
-
-# > 排除简单主机名
-exclude-simple-hostnames = true
-
-# > VIF Excluded Routes
-tun-excluded-routes = %APPEND% 239.255.255.250/32
 
 [URL Rewrite]
 # Redirect Google Search Service
@@ -74,6 +65,7 @@ tun-excluded-routes = %APPEND% 239.255.255.250/32
 ^https?:\/\/(www.)?nicelabel\.cc\/ https://www.nicelabel.com/zh/ 302
 ^https?:\/\/(www.)?ntfsformac\.cc\/ https://www.tuxera.com/products/tuxera-ntfs-for-mac-cn/ 302
 ^https?:\/\/(www.)?ntfsformac\.cn\/ https://china.paragon-software.com/home-mac/ntfs-for-mac/ 302
+^https?:\/\/(www.)?officesoftcn\.com\/ https://www.microsoft.com/zh-cn/microsoft-365 302
 ^https?:\/\/(www.)?overturechina\.com\/ https://sonicscores.com/ 302
 ^https?:\/\/(www.)?passwordrecovery\.cn\/ https://cn.elcomsoft.com/aopr.html 302
 ^https?:\/\/(www.)?pdfexpert\.cc\/ https://pdfexpert.com/zh 302
@@ -101,9 +93,3 @@ bstar_play = type=http-request,pattern=^https?:\/\/app\.biliintl\.com\/(intl\/ga
 
 [MITM]
 hostname = %APPEND% www.google.cn,www.firefox.com.cn,api.abema.io,app.biliintl.com,passport.biliintl.com
-
-[Rule]
-# > 屏蔽HTTP3/QUIC UDP流量, 强制回退HTTP2/HTTP1.1
-AND,((PROTOCOL,UDP),(DEST-PORT,443)),REJECT-NO-DROP
-# Surge 的自动 REJECT 保护丢包，防止应用循环请求
-IP-CIDR,0.0.0.0/32,REJECT,no-resolve
