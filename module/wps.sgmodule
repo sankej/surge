@@ -1,0 +1,8 @@
+#!name=WPS
+#!desc=WPS Office 解锁部分功能
+	
+[Script]
+http-response ^https?:\/\/account\.wps\.cn\/api\/users requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/Surge/JS/Wps.js
+
+[MITM]
+hostname = %APPEND% account.wps.cn
