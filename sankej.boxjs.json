@@ -126,7 +126,7 @@
 				"https://raw.githubusercontent.com/sankej/surge/main/images/qinglong.png"
 			],
 			"author": "@SankeJ",
-			"repo": "https://raw.githubusercontent.com/sankej/surge/main/script/ql_cookie_sync.js",
+			"repo": "https://github.com/sankej/scripts",
 			"scripts": [
 				{
 					"name": "BoxJS同步到青龙",
@@ -283,16 +283,10 @@
 				"cnix_cookie"
 			],
 			"author": "@SankeJ",
-			"repo": "https://raw.githubusercontent.com/sankej/surge/main/script/airport_checkin.js",
+			"repo": "https://github.com/sankej/scripts",
 			"icons": [
 				"https://raw.githubusercontent.com/Orz-3/mini/master/Color/airport.png",
 				"https://raw.githubusercontent.com/Orz-3/mini/master/Color/airport.png"
-			],
-			"scripts": [
-				{
-					"name": "每日自动签到",
-					"script": "https://raw.githubusercontent.com/sankej/surge/main/script/airport_checkin.js"
-				}
 			],
 			"settings": [
 				{
